@@ -1,11 +1,11 @@
-package br.com.fiap.study_apir;
+package br.com.fiap.study_apir.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("raiz")
+@RequestMapping()
 public class PingController {
 
 
@@ -25,5 +25,9 @@ public class PingController {
         return "rota2";
     }
 
+    @GetMapping("rota3/test")
+    public String rota3(){
+        return "rota2";
+    }
 
 }
