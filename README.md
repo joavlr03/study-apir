@@ -81,3 +81,29 @@ docker images
 
 extra: kubernets (ver)
  
+-----------
+````
+Dockerfile
+````
+
+
+FROM ubuntu:latest
+
+RUN apt update && \
+    apt upgrade -y && \
+    apt install openjdk-17-jdk -y && \
+    apt install -y maven
+
+WORKDIR /opt/app
+
+COPY . .
+
+RUN mvn clean package
+
+CMD [ "java", "-jar", "target/app.jar" ]
+
+
+-----comando para gerar imagem---
+docker build -t minha-imagem:1.5 .
+docker run minha-imagem:1.5
+docker images
