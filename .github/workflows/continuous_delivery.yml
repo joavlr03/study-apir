@@ -9,6 +9,7 @@ jobs:
     push_to_docker_hub:
         runs-on: ubuntu-latest
         steps: 
+             -  uses: run actions/checkoutv@4
              -  name: Imprimir mensagem
                 run: echo "Olá,mundo!"
              -    name: Step 2
