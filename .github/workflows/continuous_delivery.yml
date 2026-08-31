@@ -1,0 +1,17 @@
+name: Continuous Delivery
+
+
+on:
+    push:
+
+jobs: 
+
+    push_to_docker_hub:
+        runs-on: ubuntu-latest
+        steps: 
+             -  name: Imprimir mensagem
+                run: echo "Olá,mundo!"
+             -    name: Step 2
+                  run: 
+                    echo "Nova i"
+                     ls
