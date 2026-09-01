@@ -2,6 +2,8 @@ name: Continuous Deliver
 
 on:
     push:
+        branches:
+            - develop
 
 jobs:
 
