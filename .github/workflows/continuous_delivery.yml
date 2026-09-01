@@ -19,6 +19,6 @@ jobs:
                 uses: docker/build-push-action@v7
                 with:
                     push: true
-                    tags: joavlr03/study-apir:latest             
+                    tags: joave/study-apir:latest             
 
     
