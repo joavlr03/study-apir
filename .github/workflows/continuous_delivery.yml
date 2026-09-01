@@ -1,4 +1,4 @@
-name: Continuous Deliver
+name: Continuous Delivery
 
 on:
     push:
