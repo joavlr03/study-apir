@@ -1,0 +1,57 @@
+name: Deploy Study API
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+env:
+  AZURE_RESOURCE_GROUP: rs-study-apir
+  AZURE_CONTAINER_APP: study-apir-prd
+  DOCKER_IMAGE: docker.io/acnaweb/study-apir:latest
+
+jobs:
+  deploy:
+    name: Deploy to Azure Container Apps
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Update Container App
+        uses: azure/cli@v2
+        env:
+          DB_SERVER_URL: ${{ secrets.DB_SERVER_URL }}
+          DB_SERVER_PORT: ${{ secrets.DB_SERVER_PORT }}
+          DB_SCHEMA: ${{ secrets.DB_SCHEMA }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PWD: ${{ secrets.DB_PWD }}
+          SPRING_PROFILES_ACTIVE: prd
+        with:
+          inlineScript: |
+            az containerapp update \
+              --name "$AZURE_CONTAINER_APP" \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --image "$DOCKER_IMAGE" \
+              --set-env-vars \
+                DB_SERVER_URL="$DB_SERVER_URL" \
+                DB_SERVER_PORT="$DB_SERVER_PORT" \
+                DB_SCHEMA="$DB_SCHEMA" \
+                DB_USER="$DB_USER" \
+                DB_PWD="$DB_PWD" \
+                SPRING_PROFILES_ACTIVE="$SPRING_PROFILES_ACTIVE"
+
+      - name: Show deployment
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az containerapp show \
+              --name "$AZURE_CONTAINER_APP" \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --query "{name:name, status:properties.runningStatus, fqdn:properties.configuration.ingress.fqdn}" \
+              --output table
